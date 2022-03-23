@@ -1182,6 +1182,10 @@ class PlayState extends MusicBeatState
 		coolBlackStuff.cameras = [camHUD2];
 		coolWhiteStuff.cameras = [camHUD2];
 
+                #if android
+	        addAndroidControls();
+                #end
+
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
@@ -1561,7 +1565,9 @@ class PlayState extends MusicBeatState
 		inVideoCutscene = false;
 		var ret:Dynamic = callOnLuas('onStartCountdown', []);
 		if(ret != FunkinLua.Function_Stop) {
-
+	                #if android
+	                androidc.visible = true;
+	                #end
 			if (curStage == 'beach') {
 				generateStaticArrows(0, 1);
 				generateStaticArrows(1, 1);
@@ -2321,7 +2327,7 @@ songSpeed = SONG.speed;
 		botplayTxt.visible = cpuControlled;
 		botplayTxt.visible = false;
 
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
+		if (FlxG.keys.justPressed.ENTER	#if android || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
 		{
 			var ret:Dynamic = callOnLuas('onPause', []);
 			if(ret != FunkinLua.Function_Stop) {
@@ -3421,6 +3427,9 @@ songSpeed = SONG.speed;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 		vocals.pause();
+	        #if android
+	        androidc.visible = false;
+	        #end
 		if (currSongg == 'happyend') {
 			endingSong = true;
 			coolBlackStuff.alpha = 1;
